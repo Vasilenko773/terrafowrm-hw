@@ -11,11 +11,12 @@ variable "folder_id" {
   description = "https://cloud.yandex.ru/docs/resource-manager/operations/folder/get-id"
 }
 
-variable "dev_zone" {
+variable "web_zone" {
   type        = string
   default     = "ru-central1-d"
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
 }
+
 variable "default_cidr" {
   type        = list(string)
   default     = ["10.0.1.0/24"]
@@ -24,7 +25,7 @@ variable "default_cidr" {
 
 variable "vpc_name" {
   type        = string
-  default     = "develop"
+  default     = "web-net"
   description = "VPC network & subnet name"
 }
 
@@ -85,5 +86,70 @@ variable "vm_web_platform_setting" {
     }
     description = "Для конфигурирования платформы!!!"
   }
+
+### Переменные для DB
+
+variable "vpc_db_name" {
+  type        = string
+  default     = "db-net"
+  description = "VPC network & subnet name"
+}
+
+variable "db_cidr" {
+  type        = list(string)
+  default     = ["10.0.2.0/24"]
+  description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
+}
+
+variable "db_zone" {
+  type        = string
+  default     = "ru-central1-a"
+  description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
+}
+
+
+variable "vm_db_platform_setting" {
+  type = object({
+    vm_name        = string
+    platform_id = string
+    resources   = object({
+      cores         = number
+      memory        = number
+      core_fraction = number
+    })
+
+    scheduling_policy = object({
+      preemptible = bool
+    })
+    network_interface = object({
+      is_nat       = bool
+    })
+    metadata = object({
+      serial_port_enable = number
+    })
+  })
+  ### Значения по умолчанию
+  default = {
+    vm_name     = "netology-develop-platform-db"
+    platform_id = "standard-v3"
+    resources = {
+      cores         = 2
+      memory        = 2
+      core_fraction = 20
+    }
+
+    scheduling_policy = {
+      preemptible = true
+    }
+    network_interface = {
+      is_nat       = true
+    }
+    metadata = {
+      serial_port_enable = 1
+    }
+  }
+  description = "Для конфигурирования платформы!!!"
+}
+
 
 
