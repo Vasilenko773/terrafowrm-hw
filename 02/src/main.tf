@@ -40,6 +40,7 @@ resource "yandex_compute_instance" "platform" {
   metadata = {
     serial-port-enable = var.vm_web_platform_setting.metadata.serial_port_enable
     ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
+    fqdn               = "web.green.ru"
   }
 }
 
