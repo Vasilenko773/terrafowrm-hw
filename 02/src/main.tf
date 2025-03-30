@@ -19,9 +19,9 @@ resource "yandex_compute_instance" "platform" {
   zone        = var.web_zone
 
   resources {
-    cores         = var.vm_web_platform_setting.resources.cores
-    memory        = var.vm_web_platform_setting.resources.memory
-    core_fraction = var.vm_web_platform_setting.resources.core_fraction
+    cores         =  var.vms_resources["web"].cores
+    memory        =  var.vms_resources["web"].memory
+    core_fraction =  var.vms_resources["web"].core_fraction
   }
 
   boot_disk {
@@ -38,9 +38,9 @@ resource "yandex_compute_instance" "platform" {
   }
 
   metadata = {
-    serial-port-enable = var.vm_web_platform_setting.metadata.serial_port_enable
-    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
-    fqdn               = "web.green.ru"
+    serial-port-enable = var.vms_metadata["web"].serial_port_enable
+    ssh-keys           = local.ssh_key
+    fqdn               = var.vms_metadata["web"].fqdn
   }
 }
 

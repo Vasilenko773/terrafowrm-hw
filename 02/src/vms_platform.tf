@@ -19,9 +19,9 @@ resource "yandex_compute_instance" "instance_db" {
   zone =  var.db_zone
 
   resources {
-    cores         = var.vm_db_platform_setting.resources.cores
-    memory        = var.vm_db_platform_setting.resources.memory
-    core_fraction = var.vm_db_platform_setting.resources.core_fraction
+    cores         =  var.vms_resources["db"].cores
+    memory        =  var.vms_resources["db"].memory
+    core_fraction =  var.vms_resources["db"].core_fraction
   }
 
   boot_disk {
@@ -38,8 +38,8 @@ resource "yandex_compute_instance" "instance_db" {
   }
 
   metadata = {
-    serial-port-enable = var.vm_db_platform_setting.metadata.serial_port_enable
-    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
-    fqdn               = "db.green.ru"
+    serial-port-enable = var.vms_metadata["db"].serial_port_enable
+    ssh-keys           = local.ssh_key
+    fqdn               = var.vms_metadata["db"].fqdn
   }
 }

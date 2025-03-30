@@ -1,4 +1,53 @@
-###cloud vars
+###ОЬЩИЕ ПЕРЕМЕННЫЕ
+
+variable "vms_resources" {
+  type = map(object({
+    cores        = number
+    memory       = number
+    core_fraction = number
+  }))
+
+  default = {
+    web = {
+      cores        = 2
+      memory       = 2
+      core_fraction = 20
+    },
+    db = {
+      cores        = 2
+      memory       = 2
+      core_fraction = 20
+    }
+  }
+}
+
+variable "vms_ssh_root_key" {
+  type        = string
+  default     = "заглушка ssh ключа"
+  description = "ssh-keygen -t ed25519"
+}
+
+variable "vms_metadata" {
+  type = map(object({
+    serial_port_enable = number
+    ssh_keys           = string
+    fqdn               = string
+  }))
+
+  default = {
+    web = {
+      serial_port_enable = 1
+      ssh_keys           = "заглушка"
+      fqdn               = "web.green.ru"
+    },
+    db = {
+      serial_port_enable = 1
+      ssh_keys           = "заглушка"
+      fqdn               = "db.green.ru"
+    }
+  }
+}
+
 
 variable "env" {
   type = string
@@ -41,12 +90,6 @@ variable "vpc_name" {
 
 ###ssh vars
 
-variable "vms_ssh_root_key" {
-  type        = string
-  default     = "заглушка ssh ключа"
-  description = "ssh-keygen -t ed25519"
-}
-
 variable "vm_web_image_os_family" {
   type        = string
   default     = "ubuntu-2404-lts"
@@ -57,11 +100,6 @@ variable "vm_web_platform_setting" {
     type = object({
       vm_name        = string
       platform_id = string
-      resources   = object({
-        cores         = number
-        memory        = number
-        core_fraction = number
-      })
 
       scheduling_policy = object({
         preemptible = bool
@@ -77,11 +115,6 @@ variable "vm_web_platform_setting" {
     default = {
       vm_name     = "netology-develop-platform-web"
       platform_id = "standard-v3"
-      resources = {
-        cores         = 2
-        memory        = 2
-        core_fraction = 20
-      }
 
       scheduling_policy = {
         preemptible = true
@@ -126,11 +159,6 @@ variable "vm_db_platform_setting" {
   type = object({
     vm_name        = string
     platform_id = string
-    resources   = object({
-      cores         = number
-      memory        = number
-      core_fraction = number
-    })
 
     scheduling_policy = object({
       preemptible = bool
@@ -146,11 +174,6 @@ variable "vm_db_platform_setting" {
   default = {
     vm_name     = "netology-develop-platform-db"
     platform_id = "standard-v3"
-    resources = {
-      cores         = 2
-      memory        = 2
-      core_fraction = 20
-    }
 
     scheduling_policy = {
       preemptible = true
@@ -164,6 +187,8 @@ variable "vm_db_platform_setting" {
   }
   description = "Для конфигурирования платформы!!!"
 }
+
+
 
 
 
