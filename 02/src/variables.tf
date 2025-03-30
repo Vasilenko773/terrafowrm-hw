@@ -1,5 +1,14 @@
 ###cloud vars
 
+variable "env" {
+  type = string
+  default = "test"
+}
+
+variable "component_web_type" {
+  type = string
+  default = "web-service"
+}
 
 variable "cloud_id" {
   type        = string
@@ -105,6 +114,11 @@ variable "db_zone" {
   type        = string
   default     = "ru-central1-a"
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
+}
+
+variable "component_db_type" {
+  type = string
+  default = "db-server"
 }
 
 

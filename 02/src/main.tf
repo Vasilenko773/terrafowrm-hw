@@ -14,7 +14,7 @@ data "yandex_compute_image" "ubuntu" {
 }
 
 resource "yandex_compute_instance" "platform" {
-  name        = var.vm_web_platform_setting.vm_name
+  name        = local.web_vm_name
   platform_id = var.vm_web_platform_setting.platform_id
   zone        = var.web_zone
 

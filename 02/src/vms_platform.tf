@@ -14,7 +14,7 @@ data "yandex_compute_image" "db_image" {
 
 resource "yandex_compute_instance" "instance_db" {
   #  depends_on = [yandex_compute_instance.platform]
-  name        = var.vm_db_platform_setting.vm_name
+  name        = local.db_vm_name
   platform_id = var.vm_db_platform_setting.platform_id
   zone =  var.db_zone
 
