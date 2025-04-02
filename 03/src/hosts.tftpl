@@ -1,0 +1,20 @@
+%{~ if length(webservers) > 0 ~}
+[webservers]
+%{~ for i in webservers ~}
+${i["name"]}   ansible_host=${i["nat_ip_address"]}  fqdn=${i["fqdn"]}${line_separator}
+%{~ endfor ~}
+%{~ endif ~}
+
+%{~ if length(databases) > 0 ~}
+[databases]
+%{~ for i in databases ~}
+${i["name"]}   ansible_host=${i["nat_ip_address"]}  fqdn=${i["fqdn"]}${line_separator}
+%{~ endfor ~}
+%{~ endif ~}
+
+%{~ if length(storage) > 0 ~}
+[storage]
+%{~ for i in storage ~}
+${i["name"]}   ansible_host=${i["nat_ip_address"]}  fqdn=${i["fqdn"]}${line_separator}
+%{~ endfor ~}
+%{~ endif ~}

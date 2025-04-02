@@ -85,7 +85,7 @@ variable "vm_setting_list" {
 resource "yandex_compute_instance" "virtual_db" {
   for_each = { for idx, vm in var.vm_setting_list : vm.vm_name => vm }
 
-  name        = each.value.vm_name
+  name        = "db${each.value.vm_name}"
   platform_id = each.value.platform_id
 
   resources {
@@ -115,5 +115,6 @@ resource "yandex_compute_instance" "virtual_db" {
   metadata = {
     serial-port-enable = each.value.metadata.serial_port_enable
     ssh-keys           = "${each.value.metadata.ssh_user}:${each.value.metadata.ssh_key_path}"
+    fqdn               = "db.green${each.value.vm_name}.ru"
   }
 }

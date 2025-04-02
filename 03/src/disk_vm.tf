@@ -52,6 +52,7 @@ resource "yandex_compute_instance" "vm_singleton" {
   metadata = {
     serial-port-enable = var.vm_setting["min_performance"].metadata.serial_port_enable
     ssh-keys           = "${var.vm_setting["min_performance"].metadata.ssh_user}:${var.vm_setting["min_performance"].metadata.ssh_key_path}"
+    fqdn               = "ru.green.storage"
   }
 
   dynamic "secondary_disk" {
