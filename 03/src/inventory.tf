@@ -15,7 +15,7 @@ resource "local_file" "hosts_templatefile" {
     }
     ]
     storage = [
-      {
+    for vm in [yandex_compute_instance.vm_singleton] : {
         name               = yandex_compute_instance.vm_singleton.name
         nat_ip_address     = yandex_compute_instance.vm_singleton.network_interface[0].nat_ip_address
         fqdn               = yandex_compute_instance.vm_singleton.metadata["fqdn"]
