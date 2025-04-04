@@ -26,8 +26,9 @@ resource "yandex_compute_disk" "vm_count_disk" {
 }
 
 resource "yandex_compute_instance" "vm_singleton" {
-  name        = var.vm_name
-  platform_id = var.vm_setting["min_performance"].platform_id
+  count        = 2
+  name         = "storage-${count.index}"
+  platform_id  = var.vm_setting["min_performance"].platform_id
 
   resources {
     cores         = var.vm_setting["min_performance"].resources.cores
@@ -40,9 +41,11 @@ resource "yandex_compute_instance" "vm_singleton" {
       image_id = data.yandex_compute_image.os.image_id
     }
   }
+
   scheduling_policy {
     preemptible = var.vm_setting["min_performance"].scheduling_policy.preemptible
   }
+
   network_interface {
     subnet_id          = yandex_vpc_subnet.develop.id
     nat                = var.vm_setting["min_performance"].network_interface.is_nat
@@ -56,7 +59,7 @@ resource "yandex_compute_instance" "vm_singleton" {
   }
 
   dynamic "secondary_disk" {
-    for_each = toset(yandex_compute_disk.vm_count_disk.*.id)
+    for_each = count.index == 0 ? toset([yandex_compute_disk.vm_count_disk[0].id]) : toset([yandex_compute_disk.vm_count_disk[1].id, yandex_compute_disk.vm_count_disk[2].id])
     content {
       disk_id = secondary_disk.value
     }
