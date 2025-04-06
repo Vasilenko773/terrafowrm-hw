@@ -14,44 +14,66 @@ variable "folder_id" {
   description = "https://cloud.yandex.ru/docs/resource-manager/operations/folder/get-id"
 }
 
-variable "default_zone" {
+variable "vm_os" {
+  type        = string
+  default     = "ubuntu-2404-lts"
+  description = "Уникальный идентификатор семейста ОС для образа ВМ"
+}
+
+variable "vm_setting" {
+  description = "Настройки виртуальной машины"
+
+  type = map(object({
+    vm_name        = string
+    platform_id    = string
+    resources      = object({
+      cores         = number
+      memory        = number
+      core_fraction = number
+    })
+    scheduling_policy = object({
+      preemptible = bool
+    })
+    network_interface = object({
+      is_nat = bool
+    })
+    metadata = object({
+      serial_port_enable = bool
+      ssh_key_path = string
+      ssh_user = string
+    })
+  }))
+
+  # Значения по умолчанию
+  default = {
+    min_performance = {
+      vm_name     = "singleton"
+      platform_id = "standard-v3"
+      resources   = {
+        cores         = 2
+        memory        = 2
+        core_fraction = 20
+      }
+
+      scheduling_policy = {
+        preemptible = true
+      }
+
+      network_interface = {
+        is_nat = true
+      }
+
+      metadata = {
+        serial_port_enable = true
+        ssh_key_path = "~/.ssh/id_ed25519.pub"
+        ssh_user = "green773"
+      }
+    }
+  }
+}
+
+variable "root_zone" {
   type        = string
   default     = "ru-central1-a"
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
 }
-variable "default_cidr" {
-  type        = list(string)
-  default     = ["10.0.1.0/24"]
-  description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
-}
-
-variable "vpc_name" {
-  type        = string
-  default     = "develop"
-  description = "VPC network&subnet name"
-}
-
-###common vars
-
-variable "vms_ssh_root_key" {
-  type        = string
-  default     = "your_ssh_ed25519_key"
-  description = "ssh-keygen -t ed25519"
-}
-
-###example vm_web var
-variable "vm_web_name" {
-  type        = string
-  default     = "netology-develop-platform-web"
-  description = "example vm_web_ prefix"
-}
-
-###example vm_db var
-variable "vm_db_name" {
-  type        = string
-  default     = "netology-develop-platform-db"
-  description = "example vm_db_ prefix"
-}
-
-
-
