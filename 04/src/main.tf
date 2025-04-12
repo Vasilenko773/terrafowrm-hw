@@ -31,8 +31,9 @@ resource "yandex_compute_instance" "vm_singleton" {
   }
 
   network_interface {
-    subnet_id          = module.vpc_dev.subnet_id
+    subnet_id          = module.vpc_dev.subnet.id
     nat                = var.vm_setting["min_performance"].network_interface.is_nat
+    security_group_ids = [yandex_vpc_security_group.example.id]
   }
 
   metadata = {
