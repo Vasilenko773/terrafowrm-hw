@@ -77,3 +77,21 @@ variable "root_zone" {
   default     = "ru-central1-a"
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
 }
+
+variable "singleton-ip" {
+  type = string
+  validation {
+    condition     = can(regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", var.singleton-ip))
+    error_message = "Значение переменной singleton-ip должно быть корректным IPv4-адресом, например: 192.168.0.1"
+  }
+}
+
+variable "list-ip" {
+  type = list(string)
+  validation {
+    condition = alltrue([
+    for ip in var.list-ip : can(regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip))
+    ])
+    error_message = "Все значения в ip_list должны быть корректными IPv4-адресами"
+  }
+}
